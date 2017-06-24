@@ -1,0 +1,30 @@
+body {
+  margin: 0px;
+}
+
+.left {
+  width: 70%;
+  height: 100%;
+}
+
+.right {
+  position: absolute;
+  left: 70%;
+  width: 30%;
+  height: 100%;
+  background-color: #212121;
+  display: flex;
+  flex-direction: column;
+  /*justify-content: center;*/
+  align-items: center;
+  color: white;
+}
+
+.about {
+  font-size: 48px;
+}
+
+.rightText {
+  width: 80%;
+  font-size: 24px;
+}
