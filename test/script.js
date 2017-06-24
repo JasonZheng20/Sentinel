@@ -1,5 +1,12 @@
-const testElement = document.querySelector("#frame");
-console.log("frame Element: " + testElement);
+var url = 'http://validator.w3.org/'; // website you want to scrape
 
-const testElementJs = testElement.querySelector("body");
-console.log(testElementJs);
+function getSourceAsDOM(url)
+{
+    xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET",url,false);
+    xmlhttp.send();
+    parser=new DOMParser();
+    return parser.parseFromString(xmlhttp.responseText,"text/html");
+}
+const source = getSourceAsDOM(url);
+console.log(source);
