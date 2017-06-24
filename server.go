@@ -5,19 +5,29 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var db *sql.DB
 
 func main() {
 	var err error
-	db, err = sql.Open("sqlite", "db.sqlite3")
+	db, err = sql.Open("sqlite3", "db.sqlite3")
+	if err != nil {
+		panic(err)
+	}
+	_, err = db.Exec("create table if not exists watch (" +
+		"url string," +
+		"node_address string," +
+		"phone_number string" +
+		")")
 	if err != nil {
 		panic(err)
 	}
 	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/watch", watchHandler)
-	http.ListenAndServe(":80", nil)
+	http.ListenAndServe(":8080", nil)
 }
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
@@ -47,6 +57,22 @@ func watchHandler(w http.ResponseWriter, r *http.Request) {
 		log.Print(err)
 		return
 	}
+	if data.Url == "" || data.NodeAddress == nil || data.PhoneNumber == "" {
+		w.WriteHeader(http.StatusInternalServerError)
+		log.Print("incomplete: ", data)
+		return
+	}
 	log.Print(data)
+	nodeAddress, err := json.Marshal(data.NodeAddress)
+	if err != nil {
+		panic(err)
+	}
+	_, err = db.Exec("insert into watch (url,node_address,phone_number) "+
+		"values (?, ?, ?)", data.Url, nodeAddress, data.PhoneNumber)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		log.Print(err)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 }
