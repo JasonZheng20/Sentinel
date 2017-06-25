@@ -820,7 +820,7 @@ $.position = {
 		}
 		var w1, w2,
 			div = $( "<div " +
-				"style='display:block;position:absolute;width:50px;height:50px;overflow:hidden;'>" +
+				"style='display:block;position:fixed;width:50px;height:50px;overflow:hidden;'>" +
 				"<div style='height:100px;width:auto;'></div></div>" ),
 			innerDiv = div.children()[ 0 ];
 
@@ -2471,7 +2471,7 @@ $.extend( $.effects, {
 		};
 	},
 
-	// Creates a placeholder element so that the original element can be made absolute
+	// Creates a placeholder element so that the original element can be made fixed
 	createPlaceholder: function( element ) {
 		var placeholder,
 			cssPosition = element.css( "position" ),
@@ -2491,7 +2491,7 @@ $.extend( $.effects, {
 		.outerHeight( element.outerHeight() );
 
 		if ( /^(static|relative)/.test( cssPosition ) ) {
-			cssPosition = "absolute";
+			cssPosition = "fixed";
 
 			placeholder = $( "<" + element[ 0 ].nodeName + ">" ).insertAfter( element ).css( {
 
@@ -2821,7 +2821,7 @@ $.fn.extend( {
 					left: startPosition.left - fixLeft,
 					height: element.innerHeight(),
 					width: element.innerWidth(),
-					position: targetFixed ? "fixed" : "absolute"
+					position: targetFixed ? "fixed" : "fixed"
 				} )
 				.animate( animation, options.duration, options.easing, function() {
 					transfer.remove();
@@ -3232,25 +3232,25 @@ var effectsEffectExplode = $.effects.define( "explode", "hide", function( option
 			left = offset.left + j * width;
 			mx = j - ( cells - 1 ) / 2;
 
-			// Create a clone of the now hidden main element that will be absolute positioned
+			// Create a clone of the now hidden main element that will be fixed positioned
 			// within a wrapper div off the -left and -top equal to size of our pieces
 			element
 				.clone()
 				.appendTo( "body" )
 				.wrap( "<div></div>" )
 				.css( {
-					position: "absolute",
+					position: "fixed",
 					visibility: "visible",
 					left: -j * width,
 					top: -i * height
 				} )
 
-				// Select the wrapper - make it overflow: hidden and absolute positioned based on
+				// Select the wrapper - make it overflow: hidden and fixed positioned based on
 				// where the original was located +left and +top equal to the size of pieces
 				.parent()
 					.addClass( "ui-effects-explode" )
 					.css( {
-						position: "absolute",
+						position: "fixed",
 						overflow: "hidden",
 						width: width,
 						height: height,
@@ -4212,7 +4212,7 @@ var labels = $.fn.labels = function() {
 
 var scrollParent = $.fn.scrollParent = function( includeHidden ) {
 	var position = this.css( "position" ),
-		excludeStaticParent = position === "absolute",
+		excludeStaticParent = position === "fixed",
 		overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/,
 		scrollParent = this.parents().filter( function() {
 			var parent = $( this );
@@ -4635,7 +4635,7 @@ var widgetsAccordion = $.widget( "ui.accordion", {
 				var elem = $( this ),
 					position = elem.css( "position" );
 
-				if ( position === "absolute" || position === "fixed" ) {
+				if ( position === "fixed" || position === "fixed" ) {
 					return;
 				}
 				maxHeight -= elem.outerHeight( true );
@@ -7194,7 +7194,7 @@ function datepicker_getZindex( elem ) {
 		// This makes behavior of this function consistent across browsers
 		// WebKit always returns auto if the element is positioned
 		position = elem.css( "position" );
-		if ( position === "absolute" || position === "relative" || position === "fixed" ) {
+		if ( position === "fixed" || position === "relative" || position === "fixed" ) {
 
 			// IE returns 0 when zIndex is not specified
 			// other browsers return a string
@@ -7268,7 +7268,7 @@ function Datepicker() {
 		changeYear: false, // True if year can be selected directly, false if only prev/next
 		yearRange: "c-10:c+10", // Range of years to display in drop-down,
 			// either relative to today's year (-nn:+nn), relative to currently displayed year
-			// (c-nn:c+nn), absolute (nnnn:nnnn), or a combination of the above (nnnn:-n)
+			// (c-nn:c+nn), fixed (nnnn:nnnn), or a combination of the above (nnnn:-n)
 		showOtherMonths: false, // True to show dates in other months, false to leave blank
 		selectOtherMonths: false, // True to allow selection of dates in other months, false for unselectable
 		showWeek: false, // True to show week of the year, false to not show it
@@ -7494,7 +7494,7 @@ $.extend( Datepicker.prototype, {
 			this.uuid += 1;
 			id = "dp" + this.uuid;
 			this._dialogInput = $( "<input type='text' id='" + id +
-				"' style='position: absolute; top: -100px; width: 0px;'/>" );
+				"' style='position: fixed; top: -100px; width: 0px;'/>" );
 			this._dialogInput.on( "keydown", this._doKeyDown );
 			$( "body" ).append( this._dialogInput );
 			inst = this._dialogInst = this._newInst( this._dialogInput, false );
@@ -7939,14 +7939,14 @@ $.extend( Datepicker.prototype, {
 		inst.dpDiv.empty();
 
 		// determine sizing offscreen
-		inst.dpDiv.css( { position: "absolute", display: "block", top: "-1000px" } );
+		inst.dpDiv.css( { position: "fixed", display: "block", top: "-1000px" } );
 		$.datepicker._updateDatepicker( inst );
 
 		// fix width for dynamic number of date pickers
 		// and adjust position before showing
 		offset = $.datepicker._checkOffset( inst, offset, isFixed );
 		inst.dpDiv.css( { position: ( $.datepicker._inDialog && $.blockUI ?
-			"static" : ( isFixed ? "fixed" : "absolute" ) ), display: "none",
+			"static" : ( isFixed ? "fixed" : "fixed" ) ), display: "none",
 			left: offset.left + "px", top: offset.top + "px" } );
 
 		if ( !inst.inline ) {
@@ -8094,7 +8094,7 @@ $.extend( Datepicker.prototype, {
 
 			this._lastInput = null;
 			if ( this._inDialog ) {
-				this._dialogInput.css( { position: "absolute", left: "0", top: "-100px" } );
+				this._dialogInput.css( { position: "fixed", left: "0", top: "-100px" } );
 				if ( $.blockUI ) {
 					$.unblockUI();
 					$( "body" ).append( this.dpDiv );
@@ -9637,7 +9637,7 @@ $.widget( "ui.draggable", $.ui.mouse, {
 			var iframe = $( this );
 
 			return $( "<div>" )
-				.css( "position", "absolute" )
+				.css( "position", "fixed" )
 				.appendTo( iframe.parent() )
 				.outerWidth( iframe.outerWidth() )
 				.outerHeight( iframe.outerHeight() )
@@ -9700,7 +9700,7 @@ $.widget( "ui.draggable", $.ui.mouse, {
 				return $( this ).css( "position" ) === "fixed";
 			} ).length > 0;
 
-		//The element's absolute position on the page minus margins
+		//The element's fixed position on the page minus margins
 		this.positionAbs = this.element.offset();
 		this._refreshOffsets( event );
 
@@ -9766,7 +9766,7 @@ $.widget( "ui.draggable", $.ui.mouse, {
 
 		//Compute the helpers position
 		this.position = this._generatePosition( event, true );
-		this.positionAbs = this._convertPositionTo( "absolute" );
+		this.positionAbs = this._convertPositionTo( "fixed" );
 
 		//Call plugins and callbacks and use the resulting position if something is returned
 		if ( !noPropagation ) {
@@ -9898,8 +9898,8 @@ $.widget( "ui.draggable", $.ui.mouse, {
 		}
 
 		if ( helper[ 0 ] !== this.element[ 0 ] &&
-				!( /(fixed|absolute)/ ).test( helper.css( "position" ) ) ) {
-			helper.css( "position", "absolute" );
+				!( /(fixed|fixed)/ ).test( helper.css( "position" ) ) ) {
+			helper.css( "position", "fixed" );
 		}
 
 		return helper;
@@ -9945,12 +9945,12 @@ $.widget( "ui.draggable", $.ui.mouse, {
 
 		// This is a special case where we need to modify a offset calculated on start, since the
 		// following happened:
-		// 1. The position of the helper is absolute, so it's position is calculated based on the
+		// 1. The position of the helper is fixed, so it's position is calculated based on the
 		// next positioned parent
 		// 2. The actual offset parent is a child of the scroll parent, and the scroll parent isn't
 		// the document, which means that the scroll is included in the initial calculation of the
 		// offset of the parent, and never recalculated upon drag
-		if ( this.cssPosition === "absolute" && this.scrollParent[ 0 ] !== document &&
+		if ( this.cssPosition === "fixed" && this.scrollParent[ 0 ] !== document &&
 				$.contains( this.scrollParent[ 0 ], this.offsetParent[ 0 ] ) ) {
 			po.left += this.scrollParent.scrollLeft();
 			po.top += this.scrollParent.scrollTop();
@@ -10082,13 +10082,13 @@ $.widget( "ui.draggable", $.ui.mouse, {
 			pos = this.position;
 		}
 
-		var mod = d === "absolute" ? 1 : -1,
+		var mod = d === "fixed" ? 1 : -1,
 			scrollIsRootNode = this._isRootNode( this.scrollParent[ 0 ] );
 
 		return {
 			top: (
 
-				// The absolute mouse position
+				// The fixed mouse position
 				pos.top	+
 
 				// Only for relative positioned nodes: Relative offset from element to offset parent
@@ -10102,7 +10102,7 @@ $.widget( "ui.draggable", $.ui.mouse, {
 			),
 			left: (
 
-				// The absolute mouse position
+				// The fixed mouse position
 				pos.left +
 
 				// Only for relative positioned nodes: Relative offset from element to offset parent
@@ -10202,7 +10202,7 @@ $.widget( "ui.draggable", $.ui.mouse, {
 		return {
 			top: (
 
-				// The absolute mouse position
+				// The fixed mouse position
 				pageY -
 
 				// Click offset (relative to the element)
@@ -10219,7 +10219,7 @@ $.widget( "ui.draggable", $.ui.mouse, {
 			),
 			left: (
 
-				// The absolute mouse position
+				// The fixed mouse position
 				pageX -
 
 				// Click offset (relative to the element)
@@ -10256,9 +10256,9 @@ $.widget( "ui.draggable", $.ui.mouse, {
 		ui = ui || this._uiHash();
 		$.ui.plugin.call( this, type, [ event, ui, this ], true );
 
-		// Absolute position and offset (see #6884 ) have to be recalculated after plugins
+		// fixed position and offset (see #6884 ) have to be recalculated after plugins
 		if ( /^(drag|start|stop)/.test( type ) ) {
-			this.positionAbs = this._convertPositionTo( "absolute" );
+			this.positionAbs = this._convertPositionTo( "fixed" );
 			ui.offset = this.positionAbs;
 		}
 		return $.Widget.prototype._trigger.call( this, type, event, ui );
@@ -10427,7 +10427,7 @@ $.ui.plugin.add( "draggable", "connectToSortable", {
 					sortable._mouseDrag( event );
 
 					// Copy the sortable's position because the draggable's can potentially reflect
-					// a relative position, while sortable is always absolute, which the dragged
+					// a relative position, while sortable is always fixed, which the dragged
 					// element has now become. (#8809)
 					ui.position = sortable.position;
 				}
@@ -11460,7 +11460,7 @@ $.widget( "ui.resizable", $.ui.mouse, {
 			this.helper.css( {
 				width: this.element.outerWidth(),
 				height: this.element.outerHeight(),
-				position: "absolute",
+				position: "fixed",
 				left: this.elementOffset.left + "px",
 				top: this.elementOffset.top + "px",
 				zIndex: ++o.zIndex //TODO: Don't modify option
@@ -11690,7 +11690,7 @@ $.ui.plugin.add( "resizable", "containment", {
 		}
 
 		isParent = that.containerElement.get( 0 ) === that.element.parent().get( 0 );
-		isOffsetRelative = /relative|absolute/.test( that.containerElement.css( "position" ) );
+		isOffsetRelative = /relative|fixed/.test( that.containerElement.css( "position" ) );
 
 		if ( isParent && isOffsetRelative ) {
 			that.offset.left = that.parentData.left + that.position.left;
@@ -12493,7 +12493,7 @@ $.widget( "ui.dialog", {
 			handles = options.resizable,
 
 			// .ui-resizable has position: relative defined in the stylesheet
-			// but dialogs have to use absolute or fixed positioning
+			// but dialogs have to use fixed or fixed positioning
 			position = this.uiDialog.css( "position" ),
 			resizeHandles = typeof handles === "string" ?
 				handles :
@@ -12740,7 +12740,7 @@ $.widget( "ui.dialog", {
 
 			return $( "<div>" )
 				.css( {
-					position: "absolute",
+					position: "fixed",
 					width: iframe.outerWidth(),
 					height: iframe.outerHeight()
 				} )
@@ -13107,9 +13107,9 @@ var intersect = $.ui.intersect = ( function() {
 		}
 
 		var x1 = ( draggable.positionAbs ||
-				draggable.position.absolute ).left + draggable.margins.left,
+				draggable.position.fixed ).left + draggable.margins.left,
 			y1 = ( draggable.positionAbs ||
-				draggable.position.absolute ).top + draggable.margins.top,
+				draggable.position.fixed ).top + draggable.margins.top,
 			x2 = x1 + draggable.helperProportions.width,
 			y2 = y1 + draggable.helperProportions.height,
 			l = droppable.offset.left,
@@ -15394,7 +15394,7 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 		//Get the next scrolling parent
 		this.scrollParent = this.helper.scrollParent();
 
-		//The element's absolute position on the page minus margins
+		//The element's fixed position on the page minus margins
 		this.offset = this.currentItem.offset();
 		this.offset = {
 			top: this.offset.top - this.margins.top,
@@ -15408,14 +15408,14 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 			},
 			parent: this._getParentOffset(),
 
-			// This is a relative to absolute position minus the actual position calculation -
+			// This is a relative to fixed position minus the actual position calculation -
 			// only used for relative positioned helper
 			relative: this._getRelativeOffset()
 		} );
 
-		// Only after we got the offset, we can change the helper's position to absolute
+		// Only after we got the offset, we can change the helper's position to fixed
 		// TODO: Still need to figure out a way to make relative sorting possible
-		this.helper.css( "position", "absolute" );
+		this.helper.css( "position", "fixed" );
 		this.cssPosition = this.helper.css( "position" );
 
 		//Generate the original position
@@ -15519,7 +15519,7 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 
 		//Compute the helpers position
 		this.position = this._generatePosition( event );
-		this.positionAbs = this._convertPositionTo( "absolute" );
+		this.positionAbs = this._convertPositionTo( "fixed" );
 
 		if ( !this.lastPositionAbs ) {
 			this.lastPositionAbs = this.positionAbs;
@@ -15575,8 +15575,8 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 			}
 		}
 
-		//Regenerate the absolute position used for position checks
-		this.positionAbs = this._convertPositionTo( "absolute" );
+		//Regenerate the fixed position used for position checks
+		this.positionAbs = this._convertPositionTo( "fixed" );
 
 		//Set the helper position
 		if ( !this.options.axis || this.options.axis !== "y" ) {
@@ -16310,12 +16310,12 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 
 		// This is a special case where we need to modify a offset calculated on start, since the
 		// following happened:
-		// 1. The position of the helper is absolute, so it's position is calculated based on the
+		// 1. The position of the helper is fixed, so it's position is calculated based on the
 		// next positioned parent
 		// 2. The actual offset parent is a child of the scroll parent, and the scroll parent isn't
 		// the document, which means that the scroll is included in the initial calculation of the
 		// offset of the parent, and never recalculated upon drag
-		if ( this.cssPosition === "absolute" && this.scrollParent[ 0 ] !== this.document[ 0 ] &&
+		if ( this.cssPosition === "fixed" && this.scrollParent[ 0 ] !== this.document[ 0 ] &&
 				$.contains( this.scrollParent[ 0 ], this.offsetParent[ 0 ] ) ) {
 			po.left += this.scrollParent.scrollLeft();
 			po.top += this.scrollParent.scrollTop();
@@ -16415,8 +16415,8 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 		if ( !pos ) {
 			pos = this.position;
 		}
-		var mod = d === "absolute" ? 1 : -1,
-			scroll = this.cssPosition === "absolute" &&
+		var mod = d === "fixed" ? 1 : -1,
+			scroll = this.cssPosition === "fixed" &&
 				!( this.scrollParent[ 0 ] !== this.document[ 0 ] &&
 				$.contains( this.scrollParent[ 0 ], this.offsetParent[ 0 ] ) ) ?
 					this.offsetParent :
@@ -16426,7 +16426,7 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 		return {
 			top: (
 
-				// The absolute mouse position
+				// The fixed mouse position
 				pos.top	+
 
 				// Only for relative positioned nodes: Relative offset from element to offset parent
@@ -16440,7 +16440,7 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 			),
 			left: (
 
-				// The absolute mouse position
+				// The fixed mouse position
 				pos.left +
 
 				// Only for relative positioned nodes: Relative offset from element to offset parent
@@ -16462,7 +16462,7 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 			o = this.options,
 			pageX = event.pageX,
 			pageY = event.pageY,
-			scroll = this.cssPosition === "absolute" &&
+			scroll = this.cssPosition === "fixed" &&
 				!( this.scrollParent[ 0 ] !== this.document[ 0 ] &&
 				$.contains( this.scrollParent[ 0 ], this.offsetParent[ 0 ] ) ) ?
 					this.offsetParent :
@@ -16527,7 +16527,7 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 		return {
 			top: (
 
-				// The absolute mouse position
+				// The fixed mouse position
 				pageY -
 
 				// Click offset (relative to the element)
@@ -16544,7 +16544,7 @@ var widgetsSortable = $.widget( "ui.sortable", $.ui.mouse, {
 			),
 			left: (
 
-				// The absolute mouse position
+				// The fixed mouse position
 				pageX -
 
 				// Click offset (relative to the element)
@@ -17841,7 +17841,7 @@ $.widget( "ui.tabs", {
 				var elem = $( this ),
 					position = elem.css( "position" );
 
-				if ( position === "absolute" || position === "fixed" ) {
+				if ( position === "fixed" || position === "fixed" ) {
 					return;
 				}
 				maxHeight -= elem.outerHeight( true );
