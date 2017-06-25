@@ -3,8 +3,10 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"sync"
 	"time"
@@ -126,6 +128,15 @@ func startWatcher() {
 	}()
 }
 
-func getContent(url, address string) string {
-	return ""
+func getContent(theUrl, address string) string {
+	res, err := http.PostForm("localhost:8080",
+		url.Values{"url": {theUrl}, "selector": {address}})
+	if err != nil {
+		log.Fatal(err)
+	}
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return string(body)
 }
