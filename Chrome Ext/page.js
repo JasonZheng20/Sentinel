@@ -1,6 +1,5 @@
 chrome.runtime.onConnect.addListener(function(port) {
   port.onMessage.addListener(onMessage);
-  // port.postMessage.('uh');
 });
 
 this.respond = this.respond.bind(this);
@@ -39,5 +38,6 @@ function respond(event) {
     this.chosenTarget = event.target;
     this.chosenTarget.style = "outline: 5px solid green";
     document.dispatchEvent(new CustomEvent('chosenElement')); //not dispatching, but I want to to change the text content of the ext button
+    //Need to create a way to communicate to the pop up that you have clicked something, so run the function in popup.js
   }
 }
