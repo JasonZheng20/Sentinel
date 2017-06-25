@@ -90,7 +90,7 @@ var sendWatcher = function(selector, pn, url) {
       sending = false;
     })
 	}).fail(function() {
-    document.querySelector('#popUpValue').textContent = "Success!";
+    document.querySelector('#popUpValue').textContent = "Failure! Please try again.";
     $('#pn').hide();
     $('#watchsubmit').remove();
     var newButton = '<button id="closeButton">close</button>'
