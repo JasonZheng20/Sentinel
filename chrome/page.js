@@ -4,6 +4,7 @@ chrome.runtime.onConnect.addListener(function(port) {
 
 this.respond = this.respond.bind(this);
 this.hover = this.hover.bind(this);
+// this.onSuccess = this.onSuccess.bind(this);
 this.chosenTarget = "";
 this.hovering = "";
 var sending = false;
@@ -75,34 +76,66 @@ var sendWatcher = function(selector, pn, url) {
 			url: url
 		})
 	}).done(function(message) {
-		$('#dialog').remove();
-		$('html').append(dialog);
-    document.body.style = "opacity: 1";
-    document.querySelector('body').removeEventListener('click', that.respond);
-    document.querySelector('body').removeEventListener('mouseover', that.hover);
-    $('#dialog').hide();
-    that.hovering.style = "outline:0px";
-    that.chosenTarget.style = "outline:0px";
-    that.respond = that.respond.bind(that);
-    that.hover = that.hover.bind(that);
-    sending = false;
+    document.querySelector('#popUpValue').textContent = "Success!";
+    $('#pn').hide();
+    $('#watchsubmit').remove();
+    var newButton = '<button id="closeButton">close</button>'
+    $('#dialog').append(newButton);
+    $('#closeButton').click(function() {
+      $('#dialog').remove();
+      var dialog = '<div style="position: fixed;" id="dialog" title="Basic dialog"><div class = "flex"><h2 class = "Title">Sentinel</h2><p id = "popUpValue" class = "instr">Watching content with value: </p><input placeholder="Phone Number" type="text" id="pn"></input><button id="watchsubmit">Watch!</button></div></div>';
+      $('html').append(dialog);
+      document.body.style = "opacity: 1";
+      document.querySelector('body').removeEventListener('click', that.respond);
+      document.querySelector('body').removeEventListener('mouseover', that.hover);
+      $('#dialog').hide();
+      that.hovering.style = "outline:0px";
+      that.chosenTarget.style = "outline:0px";
+      that.respond = that.respond.bind(that);
+      that.hover = that.hover.bind(that);
+      sending = false;
+    })
 	}).fail(function() {
-		$('#dialog').remove();
-		$('html').append(dialog);
-    document.body.style = "opacity: 1";
-    document.querySelector('body').removeEventListener('click', that.respond);
-    document.querySelector('body').removeEventListener('mouseover', that.hover);
-    $('#dialog').hide();
-    that.hovering.style = "outline:0px";
-    that.chosenTarget.style = "outline:0px";
-    that.respond = that.respond.bind(that);
-    that.hover = that.hover.bind(that);
-    sending = false;
+    document.querySelector('#popUpValue').textContent = "Success!";
+    $('#pn').hide();
+    $('#watchsubmit').remove();
+    var newButton = '<button id="closeButton">close</button>'
+    $('#dialog').append(newButton);
+    $('#closeButton').click(function() {
+      $('#dialog').remove();
+      var dialog = '<div style="position: fixed;" id="dialog" title="Basic dialog"><div class = "flex"><h2 class = "Title">Sentinel</h2><p id = "popUpValue" class = "instr">Watching content with value: </p><input placeholder="Phone Number" type="text" id="pn"></input><button id="watchsubmit">Watch!</button></div></div>';
+      $('html').append(dialog);
+      document.body.style = "opacity: 1";
+      document.querySelector('body').removeEventListener('click', that.respond);
+      document.querySelector('body').removeEventListener('mouseover', that.hover);
+      $('#dialog').hide();
+      that.hovering.style = "outline:0px";
+      that.chosenTarget.style = "outline:0px";
+      that.respond = that.respond.bind(that);
+      that.hover = that.hover.bind(that);
+      sending = false;
+    })
 	});
 
 	sending = false;
 }
 
+function onSuccess() {
+  $('#dialog').remove();
+  var dialog = '<div style="position: fixed;" id="dialog" title="Basic dialog"><div class = "flex"><h2 class = "Title">Sentinel</h2><p id = "popUpValue" class = "instr">Watching content with value: </p><input placeholder="Phone Number" type="text" id="pn"></input><button id="watchsubmit">Watch!</button></div></div>';
+  $('html').append(dialog);
+  document.body.style = "opacity: 1";
+  document.querySelector('body').removeEventListener('click', that.respond);
+  document.querySelector('body').removeEventListener('mouseover', that.hover);
+  $('#dialog').hide();
+  that.hovering.style = "outline:0px";
+  that.chosenTarget.style = "outline:0px";
+  that.respond = that.respond.bind(that);
+  that.hover = that.hover.bind(that);
+  sending = false;
+}
+
+var dialog = '<div style="position: fixed;" id="dialog" title="Basic dialog"><div class = "flex"><h2 class = "Title">Sentinel</h2><p id = "popUpValue" class = "instr">Watching content with value: </p><input placeholder="Phone Number" type="text" id="pn"></input><button id="watchsubmit">Watch!</button></div></div>';
 $('html').append(dialog);
 
 

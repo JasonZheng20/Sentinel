@@ -12,7 +12,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/sergi/go-diff/diffmatchpatch"
 	"github.com/sfreiberg/gotwilio"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -164,8 +163,8 @@ func startWatcher() {
 						//fmt.Println(dmp.DiffPrettyText(diffs))
 
 						twilio.SendSMS("+14695072505", "+12145637620",
-							//fmt.Sprintf("Content at %s changed from: %s\nto:%s", url, content.String, newContent), "", "")
-							fmt.Sprintf("Content at %s changed: %s", url, dmp.DiffPrettyText(diffs)), "", "")
+							fmt.Sprintf("Content at %s changed from: %s\nto:%s", url, content.String, newContent), "", "")
+						//fmt.Sprintf("Content at %s changed: %s", url, dmp.DiffPrettyText(diffs)), "", "")
 					}
 				}()
 			}
