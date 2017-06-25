@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"sync"
 	"time"
 
@@ -21,33 +20,6 @@ var db *sql.DB
 var twilio *gotwilio.Twilio
 
 func main() {
-	s := `
-<div>
-  A
-  <div>
-    B
-  </div>
-  <div>
-    C
-    <div>
-      D
-    </div>
-    E
-  </div>
-</div>
-  `
-	doc, e := html.Parse(strings.NewReader(s))
-	if e != nil {
-		panic(e)
-	}
-	log.Print(doc)
-	log.Print("[]: ", getContent(doc, []int{}))
-	log.Print("[0]: ", getContent(doc, []int{0}))
-	log.Print("[1]: ", getContent(doc, []int{1}))
-	log.Print("[0,0]: ", getContent(doc, []int{0, 0}))
-	log.Print("[0,1]: ", getContent(doc, []int{0, 1}))
-	log.Fatal("Done testing")
-
 	twilioSid := os.Getenv("TWILIO_SID")
 	twilioAuthToken := os.Getenv("TWILIO_AUTH_TOKEN")
 	twilio = gotwilio.NewTwilioClient(twilioSid, twilioAuthToken)
