@@ -76,16 +76,16 @@ var sendWatcher = function(selector, pn, url) {
 	sending = false;
 }
 
-var dialog = '<div style="position: absolute;" id="dialog" title="Basic dialog"><input placeholder="Phone Number" type="text" id="pn"></input><button id="watchsubmit">Watch!</button></div>';
+var dialog = '<div style="position: fixed;" id="dialog" title="Basic dialog"><input placeholder="Phone Number" type="text" id="pn"></input><button id="watchsubmit">Watch!</button></div>';
 $('html').append(dialog);
 
 
 var toggleModal = function() {
-	document.body.style = "opacity: 1";
+	// document.body.style = "opacity: 1";
 	$('#watchsubmit').click(function() {
 		sendWatcher(selector, $('#pn').val(), window.location.href);
 	})
-	
+
 	$('#dialog').show();
 	$('#dialog').draggable();
 }

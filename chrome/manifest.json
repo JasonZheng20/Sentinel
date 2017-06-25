@@ -10,7 +10,7 @@
     }
   ],
   "browser_action": {
-  "default_title": "Twitter Gardener",
+  "default_title": "Api.Api",
   "default_popup": "popup.html"
   },
   "icons": {
