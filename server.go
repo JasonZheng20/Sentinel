@@ -1,12 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"net/url"
 	"os"
 	"sync"
 	"time"
@@ -80,8 +81,11 @@ func watchHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = db.Exec("insert into watch (url,node_address,phone_number) "+
-		"values (?, ?, ?)", data.Url, nodeAddress, data.PhoneNumber)
+
+	newContent := getContent(data.Url, data.NodeAddress)
+
+	_, err = db.Exec("insert into watch (url,node_address,phone_number,content) "+
+		"values (?, ?, ?, ?)", data.Url, nodeAddress, data.PhoneNumber, newContent)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		log.Print(err)
@@ -117,12 +121,20 @@ func startWatcher() {
 				go func() {
 					defer wg.Done()
 					newContent := getContent(url, nodeAddress)
+					log.Printf(newContent)
 					if !content.Valid {
-						log.Printf("content at %s has not changed\n", url)
 					} else if content.String == newContent {
 						log.Printf("content at %s has not changed\n", url)
 					} else {
 						log.Printf("content changed at %s!\n", url)
+						s := fmt.Sprintf("update watch set content=\"%s\" where url=\"%s\" and phone_number=\"%s\" and node_address=\"%s\"",
+							newContent, url, phoneNumber, nodeAddress)
+						_, err = db.Exec(s)
+						if err != nil {
+							log.Print(err)
+							return
+						}
+						twilio.SendSMS("+14695072505", "+12145637620", fmt.Sprintf("content changed at %s!", url), "", "")
 					}
 				}()
 			}
@@ -131,9 +143,26 @@ func startWatcher() {
 	}()
 }
 
+type ParseInput struct {
+	Url      string `json:"url"`
+	Selector string `json:"selector"`
+}
+
 func getContent(theUrl, address string) string {
-	res, err := http.PostForm("http://localhost:3000",
-		url.Values{"url": {theUrl}, "selector": {address}})
+	//v := ParseInput{Url: theUrl, Selector: address}
+	//b := new(bytes.Buffer)
+	//json.NewEncoder(b).Encode(v)
+
+	values := map[string]string{"url": theUrl, "selector": address}
+	jsonValue, _ := json.Marshal(values)
+
+	res, err := http.Post("http://localhost:3000/parse", "application/json; charset=utf-8", bytes.NewBuffer(jsonValue))
+	//req, err := http.NewRequest("POST", "http://localhost:3000/parse", bytes.NewBuffer(jsonValue))
+	//req.Header.Set("Content-Type", "application/json")
+
+	//res, err := http.Post("http://localhost:3000/parse", "application/json; charset=utf-8", b)
+	//res, err := http.PostForm("http://localhost:3000/parse",
+	//url.Values{"url": {theUrl}, "selector": {address}})
 	if err != nil {
 		log.Fatal(err)
 	}

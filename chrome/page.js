@@ -44,8 +44,13 @@ var getUniquePath = function(node) {
 					parts.push(' :nth-child(' + ($(element).index() + 1) + ')');
 				}
     });
-
-		var select = 'html > body > ' + parts.join(' > ', parts.reverse()) + '> :nth-child(' + ($(node).index() + 1) + ')';
+		
+		var extra = (parts.length > 0) ? '>' : '';
+		var select = 'html > body > ' +
+			parts.join(' > ', parts.reverse()) +
+			extra +
+			':nth-child(' + ($(node).index() + 1) + ')';
+		console.log(select);
 
     return select;
 }
