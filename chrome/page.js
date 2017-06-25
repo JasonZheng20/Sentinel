@@ -18,6 +18,9 @@ function onMessage(active) {
     document.body.style = "opacity: 1";
     document.querySelector('body').removeEventListener('click', this.respond);
     document.querySelector('body').removeEventListener('mouseover', this.hover);
+    document.querySelector('#dialog').style = "display: none !important";
+    if (this.hovering != "") this.hovering.style = "outline:0px";
+    if (this.chosenTarget != "") this.chosenTarget.style = "outline:0px";
   }
 }
 
@@ -76,12 +79,12 @@ var sendWatcher = function(selector, pn, url) {
 	sending = false;
 }
 
-var dialog = '<div style="position: fixed;" id="dialog" title="Basic dialog"><input placeholder="Phone Number" type="text" id="pn"></input><button id="watchsubmit">Watch!</button></div>';
+var dialog = '<div style="position: fixed;" id="dialog" title="Basic dialog"><p id = "popUpValue">Watching content with value: </p><input placeholder="Phone Number" type="text" id="pn"></input><button id="watchsubmit">Watch!</button></div>';
 $('html').append(dialog);
 
 
-var toggleModal = function() {
-	// document.body.style = "opacity: 1";
+var toggleModal = function(content) {
+  document.querySelector('#popUpValue').textContent = "Watching content with value: " + content;
 	$('#watchsubmit').click(function() {
 		sendWatcher(selector, $('#pn').val(), window.location.href);
 	})
@@ -97,12 +100,11 @@ function respond(event) {
   }
   if (event.target.textContent !== "" && this.hovering !== document.querySelector('body')) {
     this.chosenTarget = event.target;
+    const content = this.chosenTarget.textContent;
 		selector = getUniquePath(this.chosenTarget);
 		if(!sending) {
-			toggleModal();
+			toggleModal(content);
 		}
     this.chosenTarget.style = "outline: 5px solid green";
-    //document.dispatchEvent(new CustomEvent('chosenElement')); //not dispatching, but I want to to change the text content of the ext button
-    //Need to create a way to communicate to the pop up that you have clicked something, so run the function in popup.js
   }
 }
