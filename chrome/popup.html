@@ -1,6 +1,8 @@
 <html>
   <head>
     <script src="popup.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Archivo+Black" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Palanquin" rel="stylesheet">
     <style>
 body {
   width: 200px;
@@ -21,12 +23,15 @@ button {
 }
 
 .Title {
+  font-family: 'Archivo Black', sans-serif;
   font-size: 18px;
   margin: 5px;
 }
 
 .instr {
-  margin: 5px;
+  font-family: 'Palanquin', sans-serif;
+  margin-top: 5px;
+  margin-bottom: 0px;
   text-align: left;
   font-size: 12px;
 }
@@ -60,12 +65,13 @@ button {
   <body>
     <h2 class = "Title">API.api</h2>
     <button class="start">Select Content</button>
+    <button class="end">Disable Selector</button>
     <p class = "instr">Instructions</p>
     <div class = "bar"></div>
     <p class = "instr">1. Click 'Select Content' to activate service</p>
     <p class = "instr">2. Click on desired content on Web page</p>
     <p class = "instr">3. Input phone number to receive SMS</p>
     <p class = "instr">4. Click 'Watch' to begin watching content</p>
-    <button class="end">Disable Selector</button>
+    <p class = "instr">5. Click 'Disable Selector' to stop selecting</p>
   </body>
 </html>

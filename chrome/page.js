@@ -18,7 +18,7 @@ function onMessage(active) {
     document.body.style = "opacity: 1";
     document.querySelector('body').removeEventListener('click', this.respond);
     document.querySelector('body').removeEventListener('mouseover', this.hover);
-    document.querySelector('#dialog').style = "display: none !important";
+    $('#dialog').hide();
     if (this.hovering != "") this.hovering.style = "outline:0px";
     if (this.chosenTarget != "") this.chosenTarget.style = "outline:0px";
   }
@@ -79,7 +79,7 @@ var sendWatcher = function(selector, pn, url) {
 	sending = false;
 }
 
-var dialog = '<div style="position: fixed;" id="dialog" title="Basic dialog"><p id = "popUpValue">Watching content with value: </p><input placeholder="Phone Number" type="text" id="pn"></input><button id="watchsubmit">Watch!</button></div>';
+var dialog = '<div style="position: fixed;" id="dialog" title="Basic dialog"><div class = "flex"><h2 class = "Title">API.api</h2><p id = "popUpValue" class = "instr">Watching content with value: </p><input placeholder="Phone Number" type="text" id="pn"></input><button id="watchsubmit">Watch!</button></div></div>';
 $('html').append(dialog);
 
 
