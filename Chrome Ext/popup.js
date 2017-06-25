@@ -7,7 +7,6 @@ function sendMessage(active) {
 
 this.changeButton = this.changeButton.bind(this);
 
-
 //Need a listener from page.js if something has been highlighted in green, then execute this function to change the button in popup
 function changeButton() {
   const button = document.querySelector('.start');
@@ -24,4 +23,3 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 //also we need to have a form to get the phone number
-//also we need to be able to let the popup not dissapear if we click off of it
