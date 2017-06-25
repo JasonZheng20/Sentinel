@@ -56,6 +56,8 @@ var getUniquePath = function(node) {
 var selector = '';
 
 var sendWatcher = function(selector, pn, url) {
+  var that = this;
+  sending = true;
 	$.ajax({
 		url: 'http://localhost:8080/watch',
 		method: "POST",
@@ -68,12 +70,30 @@ var sendWatcher = function(selector, pn, url) {
 		})
 	}).done(function(message) {
 		$('#dialog').remove();
-		var dialog = '<div style="position: absolute;" id="dialog" title="Basic dialog"><input placeholder="Phone Number" type="text" id="pn"></input><button id="watchsubmit">Watch!</button></div>';
+    var dialog = '<div style="position: fixed;" id="dialog" title="Basic dialog"><div class = "flex"><h2 class = "Title">Sentinel</h2><p id = "popUpValue" class = "instr">Watching content with value: </p><input placeholder="Phone Number" type="text" id="pn"></input><button id="watchsubmit">Watch!</button></div></div>';
 		$('html').append(dialog);
+    document.body.style = "opacity: 1";
+    document.querySelector('body').removeEventListener('click', that.respond);
+    document.querySelector('body').removeEventListener('mouseover', that.hover);
+    $('#dialog').hide();
+    that.hovering.style = "outline:0px";
+    that.chosenTarget.style = "outline:0px";
+    that.respond = that.respond.bind(that);
+    that.hover = that.hover.bind(that);
+    sending = false;
 	}).fail(function() {
 		$('#dialog').remove();
-		var dialog = '<div style="position: absolute;" id="dialog" title="Basic dialog"><input placeholder="Phone Number" type="text" id="pn"></input><button id="watchsubmit">Watch!</button></div>';
+    var dialog = '<div style="position: fixed;" id="dialog" title="Basic dialog"><div class = "flex"><h2 class = "Title">Sentinel</h2><p id = "popUpValue" class = "instr">Watching content with value: </p><input placeholder="Phone Number" type="text" id="pn"></input><button id="watchsubmit">Watch!</button></div></div>';
 		$('html').append(dialog);
+    document.body.style = "opacity: 1";
+    document.querySelector('body').removeEventListener('click', that.respond);
+    document.querySelector('body').removeEventListener('mouseover', that.hover);
+    $('#dialog').hide();
+    that.hovering.style = "outline:0px";
+    that.chosenTarget.style = "outline:0px";
+    that.respond = that.respond.bind(that);
+    that.hover = that.hover.bind(that);
+    sending = false;
 	});
 
 	sending = false;
@@ -102,9 +122,8 @@ function respond(event) {
     this.chosenTarget = event.target;
     const content = this.chosenTarget.textContent;
 		selector = getUniquePath(this.chosenTarget);
-		if(!sending) {
-			toggleModal(content);
-		}
+    console.log(this.chosenTarget);
+		toggleModal(content);
     this.chosenTarget.style = "outline: 5px solid green";
   }
 }
