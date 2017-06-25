@@ -25,7 +25,7 @@ class Page extends React.Component {
           type="text/html"
           data={url}
           width="800px" height="600px"
-          onload={injectWatch(dispatch, url)}>
+          onLoad={injectWatch(dispatch, url)}>
         </object>
       </div>
     );

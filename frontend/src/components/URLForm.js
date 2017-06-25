@@ -6,8 +6,10 @@ class URLForm extends React.Component {
   render() {
     return (
       <form onSubmit={this.props.handleSubmit}>
-        <label htmlFor="url">URL</label>
-        <Field name="url" component="input" type="text" />
+        <div className="input-group">
+          <Field name="url" className="form-control" component="input" type="text" />
+          <button type="submit" className="btn btn-outline btn-xl page-scroll">Start Now for Free!</button>
+        </div>
       </form>
     );
   }

@@ -1,0 +1,19 @@
+{
+  "name": "Api.api",
+  "version": "1.0",
+  "description": "Track data changes on various websites",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["jquery.min.js", "jquery-ui.js", "mimodal.js", "page.js"],
+      "css": ["mimodal.css"]
+    }
+  ],
+  "browser_action": {
+  "default_title": "Twitter Gardener",
+  "default_popup": "popup.html"
+  },
+  "icons": {
+  },
+  "manifest_version": 2
+}

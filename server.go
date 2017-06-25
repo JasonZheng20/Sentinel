@@ -53,7 +53,7 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 
 type WatchData struct {
 	Url         string `json:"url"`
-	NodeAddress []int  `json:"nodeAddress"`
+	NodeAddress string `json:"nodeAddress"`
 	PhoneNumber string `json:"phoneNumber"`
 }
 
@@ -70,7 +70,7 @@ func watchHandler(w http.ResponseWriter, r *http.Request) {
 		log.Print(err)
 		return
 	}
-	if data.Url == "" || data.NodeAddress == nil || data.PhoneNumber == "" {
+	if data.Url == "" || data.NodeAddress == "" || data.PhoneNumber == "" {
 		w.WriteHeader(http.StatusInternalServerError)
 		log.Print("incomplete: ", data)
 		return
@@ -103,7 +103,8 @@ func startWatcher() {
 			}
 			defer rows.Close()
 			for rows.Next() {
-				var url, nodeAddress, phoneNumber, content string
+				var url, nodeAddress, phoneNumber string
+				var content sql.NullString
 				err := rows.Scan(&url, &nodeAddress, &phoneNumber, &content)
 				if err != nil {
 					log.Fatal(err)
@@ -116,7 +117,9 @@ func startWatcher() {
 				go func() {
 					defer wg.Done()
 					newContent := getContent(url, nodeAddress)
-					if content == newContent {
+					if !content.Valid {
+						log.Printf("content at %s has not changed\n", url)
+					} else if content.String == newContent {
 						log.Printf("content at %s has not changed\n", url)
 					} else {
 						log.Printf("content changed at %s!\n", url)
@@ -129,7 +132,7 @@ func startWatcher() {
 }
 
 func getContent(theUrl, address string) string {
-	res, err := http.PostForm("localhost:8080",
+	res, err := http.PostForm("http://localhost:3000",
 		url.Values{"url": {theUrl}, "selector": {address}})
 	if err != nil {
 		log.Fatal(err)

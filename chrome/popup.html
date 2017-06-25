@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <script src="popup.js"></script>
+    <style>
+body {
+  width: 200px;
+  background-color: #fefefe;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  border: 0;
+  color: white;
+  font-size: 20px;
+  height: 50px;
+  margin: 5px;
+  width: 95%;
+}
+
+.Title {
+  font-size: 18px;
+  margin: 5px;
+}
+
+.instr {
+  margin: 5px;
+  text-align: left;
+}
+
+.bar {
+  margin-top: 2.5px;
+  height: 1px;
+  width: 80%;
+  background-color: #212121;
+}
+
+.bordered {
+  border: 5px solid red;
+}
+
+.start {
+  background-color: red;
+}
+
+.end {
+  background-color: #4caf50;
+}
+
+.stop {
+  height: 0px;
+  width: 0px;
+}
+
+    </style>
+  </head>
+  <body>
+    <h2 class = "Title">API.api</h2>
+    <button class="start">Select Content</button>
+    <p class = "instr">Instructions</p>
+    <div class = "bar"></div>
+    <p class = "instr">1. Click 'Select Content' to activate service</p>
+    <p class = "instr">2. Click on desired content on Web page</p>
+    <p class = "instr">3. Input phone number to receive SMS</p>
+    <!-- <form here> -->
+    <p class = "instr">3. Click 'Start Watching' to begin watching</p>
+    <button class="end stop"></button>
+  </body>
+</html>

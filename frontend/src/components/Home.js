@@ -16,7 +16,32 @@ class Home extends React.Component {
 
     return (
       <div className="page-home">
-        <URLForm.test onSubmit={submitUrl} />
+        <header>
+            <div id="download"  className="container">
+                <div className="row">
+                    <div className="col-sm-7">
+                        <div className="header-content">
+                            <div className="header-content-inner">
+                                <h1>API Everything – Enter URl!</h1>
+                                <URLForm.test onSubmit={submitUrl} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-sm-5">
+                        <div className="header-content">
+                            <div className="header-content-inner">
+                                <h1><u>How to use</u></h1>
+                                <hr />
+                                <p>1. Input a URL</p>
+                                <p>2. Select the HTML element you want recorded </p>
+                                <p>3. Input your contact information </p>
+                                <p>4. Let API Everything do the rest. We will notify you whenever that element changes. </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
         <Page />
       </div>
     );
