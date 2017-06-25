@@ -9,8 +9,6 @@ import (
 	"sync"
 	"time"
 
-	"golang.org/x/net/html"
-
 	"github.com/sfreiberg/gotwilio"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -103,13 +101,11 @@ func startWatcher() {
 			}
 			defer rows.Close()
 			for rows.Next() {
-				var url, nodeAddressString, phoneNumber, content string
-				err := rows.Scan(&url, &nodeAddressString, &phoneNumber, &content)
+				var url, nodeAddress, phoneNumber, content string
+				err := rows.Scan(&url, &nodeAddress, &phoneNumber, &content)
 				if err != nil {
 					log.Fatal(err)
 				}
-				var nodeAddress []int
-				err = json.Unmarshal([]byte(nodeAddressString), &nodeAddress)
 				if err != nil {
 					log.Println(err)
 					return
@@ -117,18 +113,7 @@ func startWatcher() {
 				wg.Add(1)
 				go func() {
 					defer wg.Done()
-					res, err := http.Get(url)
-					if err != nil {
-						log.Println(err)
-						return
-					}
-					defer res.Body.Close()
-					node, err := html.Parse(res.Body)
-					if err != nil {
-						log.Println(err)
-						return
-					}
-					newContent := getContent(node, nodeAddress)
+					newContent := getContent(url, nodeAddress)
 					if content == newContent {
 						log.Printf("content at %s has not changed\n", url)
 					} else {
@@ -141,17 +126,6 @@ func startWatcher() {
 	}()
 }
 
-func getContent(node *html.Node, address []int) string {
-	if len(address) == 0 {
-		return node.Data
-	}
-	i := 0
-	for {
-		if address[0] == i {
-			return getContent(node.FirstChild, address[1:])
-		} else {
-			node = node.NextSibling
-			i++
-		}
-	}
+func getContent(url, address string) string {
+	return ""
 }
