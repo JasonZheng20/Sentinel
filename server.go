@@ -30,6 +30,7 @@ func main() {
 		log.Fatal(err)
 	}
 	_, err = db.Exec("create table if not exists watch (" +
+		//"id int not null primary key," +
 		"url string not null," +
 		"node_address text not null," +
 		"phone_number text not null," +
@@ -41,7 +42,28 @@ func main() {
 	startWatcher()
 	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/watch", watchHandler)
+	http.HandleFunc("/retrieve", retrieveHandler)
 	http.ListenAndServe(":8080", nil)
+}
+
+func retrieveHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+	var id = r.URL.Query().Get("id")
+
+	var url, nodeAddress, phoneNumber string
+	var content sql.NullString
+	log.Printf(id)
+
+	err := db.QueryRow("SELECT * FROM watch WHERE id=?", id).Scan(&url, &nodeAddress, &phoneNumber, &content)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	retrievedContent := getContent(url, nodeAddress)
+	fmt.Fprintf(w, retrievedContent)
 }
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
@@ -121,20 +143,23 @@ func startWatcher() {
 				go func() {
 					defer wg.Done()
 					newContent := getContent(url, nodeAddress)
+					log.Printf(content.String)
 					log.Printf(newContent)
 					if !content.Valid {
 					} else if content.String == newContent {
 						log.Printf("content at %s has not changed\n", url)
 					} else {
 						log.Printf("content changed at %s!\n", url)
-						s := fmt.Sprintf("update watch set content=\"%s\" where url=\"%s\" and phone_number=\"%s\" and node_address=\"%s\"",
-							newContent, url, phoneNumber, nodeAddress)
+						s := fmt.Sprintf("update watch set content=\"%s\" where url=\"%s\" and phone_number=\"%s\"",
+							newContent, url, phoneNumber)
+						log.Printf(s)
 						_, err = db.Exec(s)
 						if err != nil {
 							log.Print(err)
 							return
 						}
-						twilio.SendSMS("+14695072505", "+12145637620", fmt.Sprintf("content changed at %s!", url), "", "")
+						twilio.SendSMS("+14695072505", "+12145637620",
+							fmt.Sprintf("Content at %s changed from: %s\nto:%s", url, content.String, newContent), "", "")
 					}
 				}()
 			}
