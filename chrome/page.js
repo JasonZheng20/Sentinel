@@ -79,7 +79,7 @@ var sendWatcher = function(selector, pn, url) {
 	sending = false;
 }
 
-var dialog = '<div style="position: fixed;" id="dialog" title="Basic dialog"><div class = "flex"><h2 class = "Title">API.api</h2><p id = "popUpValue" class = "instr">Watching content with value: </p><input placeholder="Phone Number" type="text" id="pn"></input><button id="watchsubmit">Watch!</button></div></div>';
+var dialog = '<div style="position: fixed;" id="dialog" title="Basic dialog"><div class = "flex"><h2 class = "Title">Sentinel</h2><p id = "popUpValue" class = "instr">Watching content with value: </p><input placeholder="Phone Number" type="text" id="pn"></input><button id="watchsubmit">Watch!</button></div></div>';
 $('html').append(dialog);
 
 

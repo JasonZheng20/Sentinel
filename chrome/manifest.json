@@ -1,5 +1,5 @@
 {
-  "name": "Api.api",
+  "name": "Sentinel",
   "version": "1.0",
   "description": "Track data changes on various websites",
   "content_scripts": [
@@ -10,7 +10,7 @@
     }
   ],
   "browser_action": {
-  "default_title": "Api.Api",
+  "default_title": "Sentinel",
   "default_popup": "popup.html"
   },
   "icons": {
